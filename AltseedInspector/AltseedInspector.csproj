@@ -104,5 +104,11 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InspectorModel\InspectorModel.csproj">
+      <Project>{388E3C63-BDCF-42B6-B2BB-BE06B5E7BBAA}</Project>
+      <Name>InspectorModel</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

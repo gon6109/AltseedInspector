@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.29209.62
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AltseedInspector", "AltseedInspector\AltseedInspector.csproj", "{1AD78DF8-DAC5-424E-A0A8-8924C3201BB7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{388E3C63-BDCF-42B6-B2BB-BE06B5E7BBAA} = {388E3C63-BDCF-42B6-B2BB-BE06B5E7BBAA}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InspectorModel", "InspectorModel\InspectorModel.csproj", "{388E3C63-BDCF-42B6-B2BB-BE06B5E7BBAA}"
 EndProject
