@@ -20,9 +20,15 @@ namespace AltseedInspector
     /// </summary>
     public partial class BoolInput : UserControl
     {
-        public BoolInput()
+        public BoolInput(string itemName, string bindingPath, object bindingSource)
         {
             InitializeComponent();
+            checkBox.Content = itemName;
+            var bind = new Binding(bindingPath);
+            bind.Source = bindingSource;
+            bind.Mode = BindingMode.TwoWay;
+            bind.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+            checkBox.SetBinding(CheckBox.IsCheckedProperty, bind);
         }
     }
 }

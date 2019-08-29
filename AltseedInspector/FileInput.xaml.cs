@@ -20,9 +20,50 @@ namespace AltseedInspector
     /// </summary>
     public partial class FileInput : UserControl
     {
-        public FileInput()
+        public string Filter { get; private set; }
+        public bool IsAutoConvertRelativePath { get; private set; }
+        public string RootPath { get; private set; }
+
+        public FileInput(string itemName, string bindingPath, object bindingSource, string filter = "All File|*.*",
+            bool isAutoConvertRelativePath = true, string rootPath = "")
         {
             InitializeComponent();
+
+            var bind = new System.Windows.Data.Binding(bindingPath);
+            bind.Source = bindingSource;
+            bind.Mode = System.Windows.Data.BindingMode.TwoWay;
+            bind.UpdateSourceTrigger = System.Windows.Data.UpdateSourceTrigger.PropertyChanged;
+            Path.SetBinding(TextBox.TextProperty, bind);
+
+            ItemName.Content = itemName;
+            Filter = filter;
+            RootPath = rootPath;
+            IsAutoConvertRelativePath = isAutoConvertRelativePath;
+        }
+
+        private void Dialog_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            openFileDialog.FileName = "";
+            openFileDialog.Filter = Filter;
+            openFileDialog.FilterIndex = 1;
+            openFileDialog.RestoreDirectory = true;
+
+            if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                try
+                {
+                    if (IsAutoConvertRelativePath)
+                        Path.Text = InspectorModel.Path.GetRelativePath(openFileDialog.FileName, RootPath);
+                    else
+                        Path.Text = openFileDialog.FileName;
+
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
     }
 }

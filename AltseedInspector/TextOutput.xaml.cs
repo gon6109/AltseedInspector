@@ -20,9 +20,11 @@ namespace AltseedInspector
     /// </summary>
     public partial class TextOutput : UserControl
     {
-        public TextOutput()
+        public TextOutput(string itemName, string text)
         {
             InitializeComponent();
+            Output.Content = text;
+            ItemName.Content = itemName;
         }
     }
 }
