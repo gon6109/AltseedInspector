@@ -19,7 +19,7 @@ namespace InspectorTest
             {
                 isExit = true;
             };
-
+            window.Inspector.AddProperty(new AltseedInspector.Property("Test", new TestModel()));
             window.Show();
 
             while (!isExit && asd.Engine.DoEvents())
