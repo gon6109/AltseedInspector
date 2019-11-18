@@ -61,7 +61,6 @@
   <ItemGroup>
     <Compile Include="BoolInputAttribute.cs" />
     <Compile Include="ButtonAttribute.cs" />
-    <Compile Include="Config.cs" />
     <Compile Include="DirectoryInputAttribute.cs" />
     <Compile Include="FileInputAttribute.cs" />
     <Compile Include="GroupAttribute.cs" />

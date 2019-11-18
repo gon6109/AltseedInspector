@@ -12,14 +12,17 @@ namespace InspectorModel
     [AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = true)]
     public sealed class DirectoryInputAttribute : BaseAttribute
     {
-        public DirectoryInputAttribute(string itemName, bool isAutoConvertRelativePath = true)
+        public DirectoryInputAttribute(string itemName, bool isAutoConvertRelativePath = true, string root = null)
         {
             ItemName = itemName;
             IsAutoConvertRelativePath = isAutoConvertRelativePath;
+            Root = root;
         }
 
         public bool IsAutoConvertRelativePath { get; }
 
         public string ItemName { get; }
+
+        public string Root { get; }
     }
 }

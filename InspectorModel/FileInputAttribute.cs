@@ -8,11 +8,12 @@ namespace InspectorModel
     [AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = true)]
     public sealed class FileInputAttribute : BaseAttribute
     {
-        public FileInputAttribute(string itemName, string filter = "All File|*.*", bool isAutoConvertRelativePath = true)
+        public FileInputAttribute(string itemName, string filter = "All File|*.*", bool isAutoConvertRelativePath = true, string root = null)
         {
             ItemName = itemName;
             Filter = filter;
             IsAutoConvertRelativePath = isAutoConvertRelativePath;
+            Root = root;
         }
 
         public bool IsAutoConvertRelativePath { get; }
@@ -20,5 +21,7 @@ namespace InspectorModel
         public string ItemName { get; }
 
         public string Filter { get; }
+
+        public string Root { get; }
     }
 }

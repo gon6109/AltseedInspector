@@ -38,6 +38,8 @@ namespace AltseedInspector
             ItemName.Content = itemName;
             Filter = filter;
             RootPath = rootPath;
+            if (RootPath == null)
+                RootPath = Environment.CurrentDirectory;
             IsAutoConvertRelativePath = isAutoConvertRelativePath;
         }
 
