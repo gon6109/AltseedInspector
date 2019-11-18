@@ -41,7 +41,7 @@ namespace AltseedInspector
             if (!isVisibleRemoveButtton) button.Visibility = Visibility.Collapsed;
             DataContext = collection;
 
-            if (BindingSource is INotifyPropertyChanged  propertyChanged)
+            if (BindingSource is INotifyPropertyChanged propertyChanged)
             {
                 propertyChanged.PropertyChanged += PropertyChanged_PropertyChanged;
             }
@@ -280,27 +280,13 @@ namespace AltseedInspector
                 int? dropItemIdx = GetItemIndex(itemsControl, dropData);
                 if (dropItemIdx != null)
                 {
-                    if (items.GetType().GetGenericTypeDefinition() == typeof(UndoRedoCollection<>))
-                    {
-                        items.GetType().GetMethod("Move").Invoke(items, new object[] { items.IndexOf(data), (int)dropItemIdx });
-                    }
-                    else
-                    {
-                        items.Remove(data);
-                        items.Insert((int)dropItemIdx, data);
-                    }
+                    items.Remove(data);
+                    items.Insert((int)dropItemIdx, data);
                 }
                 else
                 {
-                    if (items.GetType().GetGenericTypeDefinition() == typeof(UndoRedoCollection<>))
-                    {
-                        items.GetType().GetMethod("Move").Invoke(items, new object[] { items.IndexOf(data), items.Count - 1 });
-                    }
-                    else
-                    {
-                        items.Remove(data);
-                        items.Add(data);
-                    }
+                    items.Remove(data);
+                    items.Add(data);
                 }
 
                 CleanUpDragDropAndDropData();
