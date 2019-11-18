@@ -25,20 +25,22 @@ namespace AltseedInspector
     {
         object BindingSource { get; set; }
         object SelectedObject { get; set; }
-        public string AdditionButtonEventMethodName { get; private set; }
+        public string AddButtonEventMethodName { get; private set; }
+        public string RemoveButtonEventMethodName { get; private set; }
         public string SelectedItemBindingPath { get; private set; }
 
         public ListInput(string groupName, object collection, object bindingSource,
-            string selectedItemBindingPath, string additionButtonEventMethodName, bool isVisibleRemoveButtton)
+            string selectedItemBindingPath, string addButtonEventMethodName, string removeButtonEventMethodName)
         {
             InitializeComponent();
 
             BindingSource = bindingSource;
             expander.Header = groupName;
-            AdditionButtonEventMethodName = additionButtonEventMethodName;
+            AddButtonEventMethodName = addButtonEventMethodName;
+            RemoveButtonEventMethodName = removeButtonEventMethodName;
             SelectedItemBindingPath = selectedItemBindingPath;
-            if (AdditionButtonEventMethodName == "") button1.Visibility = Visibility.Collapsed;
-            if (!isVisibleRemoveButtton) button.Visibility = Visibility.Collapsed;
+            if (AddButtonEventMethodName == "") button1.Visibility = Visibility.Collapsed;
+            if (RemoveButtonEventMethodName == "") button.Visibility = Visibility.Collapsed;
             DataContext = collection;
 
             if (BindingSource is INotifyPropertyChanged propertyChanged)
@@ -88,13 +90,14 @@ namespace AltseedInspector
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
+            if (SelectedItem == null) return;
             SelectedItem.Children.Clear();
-            DataContext.GetType().GetMethod("Remove").Invoke(DataContext, new object[] { SelectedObject });
+            BindingSource.GetType().GetMethod(RemoveButtonEventMethodName, new Type[] { SelectedObject.GetType() }).Invoke(BindingSource, new object[] { SelectedObject });
         }
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            BindingSource.GetType().GetMethod(AdditionButtonEventMethodName, new Type[0]).Invoke(BindingSource, new object[] { });
+            BindingSource.GetType().GetMethod(AddButtonEventMethodName, new Type[0]).Invoke(BindingSource, new object[] { });
         }
 
         /// <summary>

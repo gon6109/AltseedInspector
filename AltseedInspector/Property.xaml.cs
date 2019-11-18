@@ -71,13 +71,13 @@ namespace AltseedInspector
                 switch (att)
                 {
                     case TextOutputAttribute textOutput:
-                        PropertyItems.Children.Add(new TextOutput(textOutput.ItemName, info.GetValue(bindingSource).ToString()));
+                        PropertyItems.Children.Add(new TextOutput(textOutput.ItemName, info.Name, bindingSource));
                         break;
                     case DirectoryInputAttribute directoryInput:
-                        PropertyItems.Children.Add(new DirectoryInput(directoryInput.ItemName, info.Name, bindingSource, directoryInput.IsAutoConvertRelativePath, Config.Instance.Root));
+                        PropertyItems.Children.Add(new DirectoryInput(directoryInput.ItemName, info.Name, bindingSource, directoryInput.IsAutoConvertRelativePath, directoryInput.Root));
                         break;
                     case FileInputAttribute fileInput:
-                        PropertyItems.Children.Add(new FileInput(fileInput.ItemName, info.Name, bindingSource, fileInput.Filter, fileInput.IsAutoConvertRelativePath, Config.Instance.Root));
+                        PropertyItems.Children.Add(new FileInput(fileInput.ItemName, info.Name, bindingSource, fileInput.Filter, fileInput.IsAutoConvertRelativePath, fileInput.Root));
                         break;
                     case VectorInputAttribute vectorInput:
                         PropertyItems.Children.Add(new VectorInput(vectorInput.ItemName, info.Name, bindingSource));
@@ -101,7 +101,7 @@ namespace AltseedInspector
                         if (info.PropertyType.GetGenericArguments()[0] != null && typeof(IListInput).IsAssignableFrom(info.PropertyType.GetGenericArguments()[0]))
                             PropertyItems.Children.Add(
                                 new ListInput(listInput.GroupName, info.GetValue(bindingSource), bindingSource,
-                                listInput.SelectedObjectBindingPath, listInput.AdditionButtonEventMethodName, listInput.IsVisibleRemoveButtton));
+                                listInput.SelectedObjectBindingPath, listInput.AddButtonEventMethodName, listInput.RemoveButtonEventMethodName));
                         break;
                 }
             }
