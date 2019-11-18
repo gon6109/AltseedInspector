@@ -8,6 +8,9 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="400">
     <Grid>
-        <AltseedInspector:Inspector x:Name="Inspector" HorizontalAlignment="Left" Height="569" VerticalAlignment="Top" Width="392"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <AltseedInspector:Inspector x:Name="Inspector" HorizontalContentAlignment="Stretch"/>
     </Grid>
 </Window>

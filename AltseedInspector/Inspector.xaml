@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:AltseedInspector"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="350" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
-    <ScrollViewer VerticalScrollBarVisibility="Auto" UseLayoutRounding="True" TextOptions.TextFormattingMode="Display" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Width="350">
-        <StackPanel x:Name="Properties" CanVerticallyScroll="True"/>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" UseLayoutRounding="False" TextOptions.TextFormattingMode="Display" HorizontalContentAlignment="Stretch">
+        <StackPanel x:Name="Properties" CanVerticallyScroll="True" Grid.IsSharedSizeScope="True">
+        </StackPanel>
     </ScrollViewer>
 </UserControl>

@@ -9,9 +9,8 @@
     <Grid Background="{DynamicResource {x:Static SystemColors.AppWorkspaceBrushKey}}">
         <Expander x:Name="expander" Header="Expander" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" FontSize="14" IsExpanded="True">
             <Grid Background="#FFE5E5E5">
-                <StackPanel x:Name="PropertyItems" Margin="5,0,0,0" Grid.Row="1"/>
+                <StackPanel x:Name="PropertyItems" Margin="1,0,0,0"/>
             </Grid>
         </Expander>
-
     </Grid>
 </UserControl>
