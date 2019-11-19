@@ -41,6 +41,12 @@ namespace AltseedInspector
             RootPathBinding = rootPathBinding;
         }
 
+        private string RootPath => (string)BindingSource.GetType().GetProperties().Cast<PropertyInfo>()
+                        .First(obj =>
+                            obj.GetCustomAttribute(typeof(InspectorModel.RootPathBindingAttribute)) is InspectorModel.RootPathBindingAttribute bindingAttribute &&
+                            bindingAttribute.Name == RootPathBinding)
+                        .GetValue(BindingSource);
+
         private void Dialog_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
@@ -51,14 +57,9 @@ namespace AltseedInspector
 
             if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                if (RootPathBinding != null)
+                if (RootPathBinding != null && RootPath != null)
                 {
-                    var rootPath = (string)BindingSource.GetType().GetProperties().Cast<PropertyInfo>()
-                        .First(obj =>
-                            obj.GetCustomAttribute(typeof(InspectorModel.RootPathBindingAttribute)) is InspectorModel.RootPathBindingAttribute bindingAttribute &&
-                            bindingAttribute.Name == RootPathBinding)
-                        .GetValue(BindingSource);
-                    Path.Text = InspectorModel.Path.GetRelativePath(openFileDialog.FileName, rootPath);
+                    Path.Text = InspectorModel.Path.GetRelativePath(openFileDialog.FileName, RootPath);
                 }
                 else
                     Path.Text = openFileDialog.FileName;
