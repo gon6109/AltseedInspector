@@ -67,9 +67,10 @@ namespace InspectorTest
             }
         }
 
-        [ListInput("TextObjects", addButtonEventMethodName: "AddText", removeButtonEventMethodName: "RemoveText")]
+        [ListInput("TextObjects")]
         public ObservableCollection<TextObject> TextObjects { get; set; }
 
+        [AddButtonMethodBinding("TextObjects")]
         public void AddText()
         {
             TextObject textObject = new TextObject();
@@ -79,11 +80,15 @@ namespace InspectorTest
             OnPropertyChanged("TextCount");
         }
 
-        public void RemoveText(TextObject textObject)
+        [RemoveButtonMethodBinding("TextObjects")]
+        public void RemoveText(object removeObject)
         {
-            TextObjects.Remove(textObject);
-            textObject.Dispose();
-            OnPropertyChanged("TextCount");
+            if (removeObject is TextObject textObject)
+            {
+                TextObjects.Remove(textObject);
+                textObject.Dispose();
+                OnPropertyChanged("TextCount");
+            }
         }
 
         public class TextureObject : asd.TextureObject2D, IListInput, INotifyPropertyChanged
@@ -148,9 +153,10 @@ namespace InspectorTest
             }
         }
 
-        [ListInput("TextureObjects", addButtonEventMethodName: "AddTexture", removeButtonEventMethodName: "RemoveTexture")]
+        [ListInput("TextureObjects")]
         public ObservableCollection<TextureObject> TextureObjects { get; set; }
 
+        [AddButtonMethodBinding("TextureObjects")]
         public void AddTexture()
         {
             TextureObject textureObject = new TextureObject();
@@ -159,11 +165,15 @@ namespace InspectorTest
             OnPropertyChanged("TextureCount");
         }
 
-        public void RemoveTexture(TextureObject textureObject)
+        [RemoveButtonMethodBinding("TextureObjects")]
+        public void RemoveTexture(object removeObject)
         {
-            TextureObjects.Remove(textureObject);
-            textureObject.Dispose();
-            OnPropertyChanged("TextureCount");
+            if (removeObject is TextureObject textureObject)
+            {
+                TextureObjects.Remove(textureObject);
+                textureObject.Dispose();
+                OnPropertyChanged("TextureCount");
+            }
         }
 
         [TextOutput("Text Cont")]
