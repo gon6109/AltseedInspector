@@ -69,6 +69,7 @@
     <Compile Include="NumberInputAttribute.cs" />
     <Compile Include="Path.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RootPathBindingAttribute.cs" />
     <Compile Include="ScriptAttribute.cs" />
     <Compile Include="TextAreaInputAttribute.cs" />
     <Compile Include="TextInputAttribute.cs" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,17 +22,14 @@ namespace AltseedInspector
     /// </summary>
     public partial class DirectoryInput : UserControl
     {
-        /// <summary>
-        /// 自動で相対パスに変換するか
-        /// </summary>
-        public bool IsAutoConvertRelativePath { get; }
+        public object BindingSource { get; }
 
         /// <summary>
         /// ルートディレクトリ
         /// </summary>
-        public string RootPath { get; }
+        public string RootPathBinding { get; }
 
-        public DirectoryInput(string itemName, string bindingPath, object bindingSource, bool isAutoConvertRelativePath = true, string rootPath = "")
+        public DirectoryInput(string itemName, string bindingPath, object bindingSource, string rootPathBinding)
         {
             InitializeComponent();
 
@@ -42,10 +40,9 @@ namespace AltseedInspector
             Path.SetBinding(TextBox.TextProperty, bind);
 
             ItemName.Content = itemName;
-            RootPath = rootPath;
-            if (RootPath == null)
-                RootPath = Environment.CurrentDirectory;
-            IsAutoConvertRelativePath = isAutoConvertRelativePath;
+            RootPathBinding = rootPathBinding;
+
+            BindingSource = bindingSource;
         }
 
         private void Dialog_Click(object sender, RoutedEventArgs e)
@@ -56,7 +53,15 @@ namespace AltseedInspector
             openFileDialog.RestoreDirectory = true;
             var result = openFileDialog.ShowDialog(new WindowInteropHelper(Window.GetWindow(this)).Handle);
             if (result == Microsoft.WindowsAPICodePack.Dialogs.CommonFileDialogResult.Ok) Path.Text = openFileDialog.FileName + "\\";
-            if (IsAutoConvertRelativePath) Path.Text = InspectorModel.Path.GetRelativePath(Path.Text, RootPath);
+            if (RootPathBinding != null)
+            {
+                var rootPath = (string)BindingSource.GetType().GetProperties().Cast<PropertyInfo>()
+                    .First(obj =>
+                        obj.GetCustomAttribute(typeof(InspectorModel.RootPathBindingAttribute)) is InspectorModel.RootPathBindingAttribute bindingAttribute &&
+                        bindingAttribute.Name == RootPathBinding)
+                    .GetValue(BindingSource);
+                Path.Text = InspectorModel.Path.GetRelativePath(Path.Text, RootPathBinding);
+            }
         }
     }
 }

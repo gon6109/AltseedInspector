@@ -74,10 +74,10 @@ namespace AltseedInspector
                         PropertyItems.Children.Add(new TextOutput(textOutput.ItemName, info.Name, bindingSource));
                         break;
                     case DirectoryInputAttribute directoryInput:
-                        PropertyItems.Children.Add(new DirectoryInput(directoryInput.ItemName, info.Name, bindingSource, directoryInput.IsAutoConvertRelativePath, directoryInput.Root));
+                        PropertyItems.Children.Add(new DirectoryInput(directoryInput.ItemName, info.Name, bindingSource, directoryInput.RootPathBinding));
                         break;
                     case FileInputAttribute fileInput:
-                        PropertyItems.Children.Add(new FileInput(fileInput.ItemName, info.Name, bindingSource, fileInput.Filter, fileInput.IsAutoConvertRelativePath, fileInput.Root));
+                        PropertyItems.Children.Add(new FileInput(fileInput.ItemName, info.Name, bindingSource, fileInput.Filter, fileInput.RootPathBinding));
                         break;
                     case VectorInputAttribute vectorInput:
                         PropertyItems.Children.Add(new VectorInput(vectorInput.ItemName, info.Name, bindingSource));

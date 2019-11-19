@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 namespace InspectorModel
 {
     /// <summary>
-    /// ボタン
+    /// ルートパス指定
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = true)]
-    public class ButtonAttribute : BaseAttribute
+    [AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = true)]
+    public class RootPathBindingAttribute : BaseAttribute
     {
         public string Name { get; }
 
-        public ButtonAttribute(string name)
+        public RootPathBindingAttribute(string name)
         {
             Name = name;
         }

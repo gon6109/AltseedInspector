@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,12 +21,11 @@ namespace AltseedInspector
     /// </summary>
     public partial class FileInput : UserControl
     {
-        public string Filter { get; private set; }
-        public bool IsAutoConvertRelativePath { get; private set; }
-        public string RootPath { get; private set; }
+        public object BindingSource { get; }
+        public string Filter { get; }
+        public string RootPathBinding { get; }
 
-        public FileInput(string itemName, string bindingPath, object bindingSource, string filter = "All File|*.*",
-            bool isAutoConvertRelativePath = true, string rootPath = "")
+        public FileInput(string itemName, string bindingPath, object bindingSource, string filter = "All File|*.*", string rootPathBinding = "")
         {
             InitializeComponent();
 
@@ -35,12 +35,10 @@ namespace AltseedInspector
             bind.UpdateSourceTrigger = System.Windows.Data.UpdateSourceTrigger.PropertyChanged;
             Path.SetBinding(TextBox.TextProperty, bind);
 
+            BindingSource = bindingSource;
             ItemName.Content = itemName;
             Filter = filter;
-            RootPath = rootPath;
-            if (RootPath == null)
-                RootPath = Environment.CurrentDirectory;
-            IsAutoConvertRelativePath = isAutoConvertRelativePath;
+            RootPathBinding = rootPathBinding;
         }
 
         private void Dialog_Click(object sender, RoutedEventArgs e)
@@ -53,18 +51,17 @@ namespace AltseedInspector
 
             if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                try
+                if (RootPathBinding != null)
                 {
-                    if (IsAutoConvertRelativePath)
-                        Path.Text = InspectorModel.Path.GetRelativePath(openFileDialog.FileName, RootPath);
-                    else
-                        Path.Text = openFileDialog.FileName;
-
+                    var rootPath = (string)BindingSource.GetType().GetProperties().Cast<PropertyInfo>()
+                        .First(obj =>
+                            obj.GetCustomAttribute(typeof(InspectorModel.RootPathBindingAttribute)) is InspectorModel.RootPathBindingAttribute bindingAttribute &&
+                            bindingAttribute.Name == RootPathBinding)
+                        .GetValue(BindingSource);
+                    Path.Text = InspectorModel.Path.GetRelativePath(openFileDialog.FileName, rootPath);
                 }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
+                else
+                    Path.Text = openFileDialog.FileName;
             }
         }
     }
