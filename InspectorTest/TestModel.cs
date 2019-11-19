@@ -16,6 +16,9 @@ namespace InspectorTest
         protected virtual void OnPropertyChanged([CallerMemberName]string propertyName = null) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
+        [DirectoryInput("Root Path")]
+        public static string RootPath { get; set; }
+
         public class TextObject : asd.TextObject2D, IListInput, INotifyPropertyChanged
         {
             public event PropertyChangedEventHandler PropertyChanged;
@@ -91,7 +94,10 @@ namespace InspectorTest
 
             private string name;
 
-            [FileInput("Texture File", "PNG File|*.png", false)]
+            [RootPathBinding("root")]
+            public string RootPath => TestModel.RootPath;
+
+            [FileInput("Texture File", "PNG File|*.png", "root")]
             public string Name
             {
                 get => name;
