@@ -100,8 +100,7 @@ namespace AltseedInspector
                     case ListInputAttribute listInput:
                         if (info.PropertyType.GetGenericArguments()[0] != null && typeof(IListInput).IsAssignableFrom(info.PropertyType.GetGenericArguments()[0]))
                             PropertyItems.Children.Add(
-                                new ListInput(listInput.GroupName, info.GetValue(bindingSource), bindingSource,
-                                listInput.SelectedObjectBindingPath, listInput.AddButtonEventMethodName, listInput.RemoveButtonEventMethodName));
+                                new ListInput(listInput.GroupName, info.GetValue(bindingSource), bindingSource));
                         break;
                 }
             }

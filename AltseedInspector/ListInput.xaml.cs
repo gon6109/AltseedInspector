@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -25,22 +26,36 @@ namespace AltseedInspector
     {
         object BindingSource { get; set; }
         object SelectedObject { get; set; }
-        public string AddButtonEventMethodName { get; private set; }
-        public string RemoveButtonEventMethodName { get; private set; }
+        public Action AddButtonEventFunc { get; }
+        public Action<object> RemoveButtonEventFunc { get; }
         public string SelectedItemBindingPath { get; private set; }
 
-        public ListInput(string groupName, object collection, object bindingSource,
-            string selectedItemBindingPath, string addButtonEventMethodName, string removeButtonEventMethodName)
+        public ListInput(string groupName, object collection, object bindingSource)
         {
             InitializeComponent();
 
             BindingSource = bindingSource;
             expander.Header = groupName;
-            AddButtonEventMethodName = addButtonEventMethodName;
-            RemoveButtonEventMethodName = removeButtonEventMethodName;
-            SelectedItemBindingPath = selectedItemBindingPath;
-            if (AddButtonEventMethodName == "") button1.Visibility = Visibility.Collapsed;
-            if (RemoveButtonEventMethodName == "") button.Visibility = Visibility.Collapsed;
+
+            AddButtonEventFunc = (Action)BindingSource.GetType().GetMethods().Cast<MethodInfo>()
+                .FirstOrDefault(obj =>
+                    obj.GetCustomAttribute(typeof(AddButtonMethodBindingAttribute)) is AddButtonMethodBindingAttribute bindingAttribute &&
+                    bindingAttribute.Name == groupName)
+                .CreateDelegate(typeof(Action), BindingSource);
+            RemoveButtonEventFunc = (Action<object>)BindingSource.GetType().GetMethods().Cast<MethodInfo>()
+                .FirstOrDefault(obj =>
+                    obj.GetCustomAttribute(typeof(RemoveButtonMethodBindingAttribute)) is RemoveButtonMethodBindingAttribute bindingAttribute &&
+                    bindingAttribute.Name == groupName)
+                .CreateDelegate(typeof(Action<object>), BindingSource);
+            if (AddButtonEventFunc == null) button1.Visibility = Visibility.Collapsed;
+            if (RemoveButtonEventFunc == null) button.Visibility = Visibility.Collapsed;
+
+            SelectedItemBindingPath = BindingSource.GetType().GetProperties().Cast<PropertyInfo>()
+                .FirstOrDefault(obj =>
+                    obj.GetCustomAttribute(typeof(SelectedItemBindingAttribute)) is SelectedItemBindingAttribute bindingAttribute &&
+                    bindingAttribute.Name == groupName)
+                ?.Name;
+
             DataContext = collection;
 
             if (BindingSource is INotifyPropertyChanged propertyChanged)
@@ -49,7 +64,7 @@ namespace AltseedInspector
             }
 
             if (listBox.Items.Count == 1) listBox.SelectedIndex = 0;
-            if (SelectedItemBindingPath != "" &&
+            if (SelectedItemBindingPath != null &&
                 BindingSource.GetType().GetProperty(SelectedItemBindingPath).GetValue(BindingSource) != null)
             {
                 var selected = BindingSource.GetType().GetProperty(SelectedItemBindingPath).GetValue(BindingSource);
@@ -84,7 +99,7 @@ namespace AltseedInspector
                 SelectedObject = e.AddedItems[0];
                 SelectedItem.Children.Add(temp);
             }
-            if (SelectedItemBindingPath != ""
+            if (SelectedItemBindingPath != null
                 && BindingSource.GetType().GetProperty(SelectedItemBindingPath).GetValue(BindingSource) != SelectedObject) BindingSource.GetType().GetProperty(SelectedItemBindingPath).SetValue(BindingSource, SelectedObject);
         }
 
@@ -92,12 +107,12 @@ namespace AltseedInspector
         {
             if (SelectedItem == null) return;
             SelectedItem.Children.Clear();
-            BindingSource.GetType().GetMethod(RemoveButtonEventMethodName, new Type[] { SelectedObject.GetType() }).Invoke(BindingSource, new object[] { SelectedObject });
+            RemoveButtonEventFunc?.Invoke(SelectedObject);
         }
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            BindingSource.GetType().GetMethod(AddButtonEventMethodName, new Type[0]).Invoke(BindingSource, new object[] { });
+            AddButtonEventFunc?.Invoke();
         }
 
         /// <summary>
