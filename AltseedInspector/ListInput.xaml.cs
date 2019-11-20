@@ -16,8 +16,8 @@ namespace AltseedInspector
     {
         object BindingSource { get; set; }
         object SelectedObject { get; set; }
-        public Action AddButtonEventFunc { get; }
-        public Action<object> RemoveButtonEventFunc { get; }
+        public MethodInfo AddButtonEventMethodInfo { get; }
+        public MethodInfo RemoveButtonEventMethodInfo { get; }
         public string SelectedItemBindingPath { get; private set; }
 
         public ListInput(string groupName, object collection, object bindingSource)
@@ -27,18 +27,16 @@ namespace AltseedInspector
             BindingSource = bindingSource;
             expander.Header = groupName;
 
-            AddButtonEventFunc = (Action)BindingSource.GetType().GetMethods().Cast<MethodInfo>()
+            AddButtonEventMethodInfo = BindingSource.GetType().GetMethods().Cast<MethodInfo>()
                 .FirstOrDefault(obj =>
                     obj.GetCustomAttribute(typeof(AddButtonMethodBindingAttribute)) is AddButtonMethodBindingAttribute bindingAttribute &&
-                    bindingAttribute.Name == groupName)
-                ?.CreateDelegate(typeof(Action), BindingSource);
-            RemoveButtonEventFunc = (Action<object>)BindingSource.GetType().GetMethods().Cast<MethodInfo>()
+                    bindingAttribute.Name == groupName);
+            RemoveButtonEventMethodInfo = BindingSource.GetType().GetMethods().Cast<MethodInfo>()
                 .FirstOrDefault(obj =>
                     obj.GetCustomAttribute(typeof(RemoveButtonMethodBindingAttribute)) is RemoveButtonMethodBindingAttribute bindingAttribute &&
-                    bindingAttribute.Name == groupName)
-                ?.CreateDelegate(typeof(Action<object>), BindingSource);
-            if (AddButtonEventFunc == null) button1.Visibility = Visibility.Collapsed;
-            if (RemoveButtonEventFunc == null) button.Visibility = Visibility.Collapsed;
+                    bindingAttribute.Name == groupName);
+            if (AddButtonEventMethodInfo == null) button1.Visibility = Visibility.Collapsed;
+            if (RemoveButtonEventMethodInfo == null) button.Visibility = Visibility.Collapsed;
 
             SelectedItemBindingPath = BindingSource.GetType().GetProperties().Cast<PropertyInfo>()
                 .FirstOrDefault(obj =>
@@ -97,12 +95,12 @@ namespace AltseedInspector
         {
             if (SelectedItem == null) return;
             SelectedItem.Children.Clear();
-            RemoveButtonEventFunc?.Invoke(SelectedObject);
+            RemoveButtonEventMethodInfo?.Invoke(BindingSource, new object[] { SelectedObject });
         }
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            AddButtonEventFunc?.Invoke();
+            AddButtonEventMethodInfo?.Invoke(BindingSource, new object[] { });
         }
 
         /// <summary>

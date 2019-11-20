@@ -76,14 +76,11 @@ namespace InspectorTest
         }
 
         [RemoveButtonMethodBinding("TextObjects")]
-        public void RemoveText(object removeObject)
+        public void RemoveText(TextObject textObject)
         {
-            if (removeObject is TextObject textObject)
-            {
-                TextObjects.Remove(textObject);
-                textObject.Dispose();
-                OnPropertyChanged("TextCount");
-            }
+            TextObjects.Remove(textObject);
+            textObject.Dispose();
+            OnPropertyChanged("TextCount");
         }
 
         public class TextureObject : asd.TextureObject2D, IListInput, INotifyPropertyChanged
@@ -161,14 +158,11 @@ namespace InspectorTest
         }
 
         [RemoveButtonMethodBinding("TextureObjects")]
-        public void RemoveTexture(object removeObject)
+        public void RemoveTexture(TextureObject textureObject)
         {
-            if (removeObject is TextureObject textureObject)
-            {
-                TextureObjects.Remove(textureObject);
-                textureObject.Dispose();
-                OnPropertyChanged("TextureCount");
-            }
+            TextureObjects.Remove(textureObject);
+            textureObject.Dispose();
+            OnPropertyChanged("TextureCount");
         }
 
         [TextOutput("Text Cont")]
