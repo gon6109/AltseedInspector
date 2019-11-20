@@ -12,6 +12,11 @@ namespace AltseedInspector
     public partial class Property : UserControl
     {
         /// <summary>
+        /// タイトル
+        /// </summary>
+        public string Title => expander.Header as string;
+
+        /// <summary>
         /// 単一バインディングソースからプロパティを作成
         /// </summary>
         /// <param name="title">ヘッダータイトル</param>
