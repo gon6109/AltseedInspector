@@ -41,12 +41,12 @@ namespace AltseedInspector
                 .FirstOrDefault(obj =>
                     obj.GetCustomAttribute(typeof(AddButtonMethodBindingAttribute)) is AddButtonMethodBindingAttribute bindingAttribute &&
                     bindingAttribute.Name == groupName)
-                .CreateDelegate(typeof(Action), BindingSource);
+                ?.CreateDelegate(typeof(Action), BindingSource);
             RemoveButtonEventFunc = (Action<object>)BindingSource.GetType().GetMethods().Cast<MethodInfo>()
                 .FirstOrDefault(obj =>
                     obj.GetCustomAttribute(typeof(RemoveButtonMethodBindingAttribute)) is RemoveButtonMethodBindingAttribute bindingAttribute &&
                     bindingAttribute.Name == groupName)
-                .CreateDelegate(typeof(Action<object>), BindingSource);
+                ?.CreateDelegate(typeof(Action<object>), BindingSource);
             if (AddButtonEventFunc == null) button1.Visibility = Visibility.Collapsed;
             if (RemoveButtonEventFunc == null) button.Visibility = Visibility.Collapsed;
 
