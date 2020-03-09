@@ -66,6 +66,7 @@
     <Compile Include="FileInputAttribute.cs" />
     <Compile Include="GroupAttribute.cs" />
     <Compile Include="BaseAttribute.cs" />
+    <Compile Include="PrimitiveListInputAttribute.cs" />
     <Compile Include="ListInputAttribute.cs" />
     <Compile Include="NumberInputAttribute.cs" />
     <Compile Include="Path.cs" />

@@ -1,4 +1,5 @@
 ﻿using InspectorModel;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -171,10 +172,23 @@ namespace InspectorTest
         [TextOutput("Texture Cont")]
         public int TextureCount => TextureObjects.Count;
 
+        [PrimitiveListInput("intリスト")]
+        public ObservableCollection<int> IntList { get; set; }
+
+        [PrimitiveListInput("floatリスト")]
+        public ObservableCollection<float> FloatList { get; set; }
+
+        [PrimitiveListInput("stringリスト")]
+        public ObservableCollection<string> StringList { get; set; }
+
         public TestModel()
         {
             TextObjects = new ObservableCollection<TextObject>();
             TextureObjects = new ObservableCollection<TextureObject>();
+
+            IntList = new ObservableCollection<int>();
+            FloatList = new ObservableCollection<float>();
+            StringList = new ObservableCollection<string>();
         }
     }
 }

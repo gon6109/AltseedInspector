@@ -1,5 +1,6 @@
 ﻿using InspectorModel;
 using System;
+using System.Collections;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
@@ -95,6 +96,11 @@ namespace AltseedInspector
                         if (info.PropertyType.GetGenericArguments()[0] != null && typeof(IListInput).IsAssignableFrom(info.PropertyType.GetGenericArguments()[0]))
                             PropertyItems.Children.Add(
                                 new ListInput(listInput.GroupName, info.GetValue(bindingSource), bindingSource));
+                        break;
+                    case PrimitiveListInputAttribute primitiveListInput:
+                        if (info.PropertyType.GetGenericArguments()[0] != null && info.GetValue(bindingSource) is IList list)
+                            PropertyItems.Children.Add(
+                                new PrimitiveListInput(primitiveListInput.GroupName, list));
                         break;
                 }
             }
