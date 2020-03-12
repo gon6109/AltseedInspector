@@ -100,7 +100,7 @@ namespace AltseedInspector
                     case PrimitiveListInputAttribute primitiveListInput:
                         if (info.PropertyType.GetGenericArguments()[0] != null && info.GetValue(bindingSource) is IList list)
                             PropertyItems.Children.Add(
-                                new PrimitiveListInput(primitiveListInput.GroupName, list));
+                                new PrimitiveListInput(primitiveListInput.GroupName, info.Name, bindingSource));
                         break;
                 }
             }

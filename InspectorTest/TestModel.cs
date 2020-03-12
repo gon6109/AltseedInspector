@@ -31,8 +31,12 @@ namespace InspectorTest
                 {
                     base.Text = value;
                     OnPropertyChanged("Name");
+                    OnPropertyChanged();
                 }
             }
+
+            [PrimitiveListInput("intリスト")]
+            public ObservableCollection<int> IntList { get; set; }
 
             [VectorInput("Position")]
             public new asd.Vector2DF Position
@@ -60,6 +64,17 @@ namespace InspectorTest
             {
                 get => base.IsDrawn;
                 set => base.IsDrawn = value;
+            }
+
+            public TextObject()
+            {
+                IntList = new ObservableCollection<int>();
+
+                IntList.CollectionChanged += (sender, e) =>
+                {
+                    Text = string.Join(", ", IntList);
+                    OnPropertyChanged("Text");
+                };
             }
         }
 
@@ -172,9 +187,6 @@ namespace InspectorTest
         [TextOutput("Texture Cont")]
         public int TextureCount => TextureObjects.Count;
 
-        [PrimitiveListInput("intリスト")]
-        public ObservableCollection<int> IntList { get; set; }
-
         [PrimitiveListInput("floatリスト")]
         public ObservableCollection<float> FloatList { get; set; }
 
@@ -186,7 +198,6 @@ namespace InspectorTest
             TextObjects = new ObservableCollection<TextObject>();
             TextureObjects = new ObservableCollection<TextureObject>();
 
-            IntList = new ObservableCollection<int>();
             FloatList = new ObservableCollection<float>();
             StringList = new ObservableCollection<string>();
         }

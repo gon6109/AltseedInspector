@@ -41,7 +41,7 @@
                     </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBox Text="{Binding .}" Padding="2,2,0,2" FontSize="14" ScrollViewer.CanContentScroll="False" GotFocus="TextBox_GotFocus" />
+                            <TextBox x:Name="textBox" Text="{Binding .}" Padding="2,2,0,2" FontSize="14" ScrollViewer.CanContentScroll="False" GotFocus="TextBox_GotFocus" TextChanged="TextBox_TextChanged"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
